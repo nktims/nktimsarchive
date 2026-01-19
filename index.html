@@ -54,6 +54,7 @@
         <a href="#page2">Text</a>
         <a href="#page3">Photos</a>
         <a href="#page4">Instagram Archive</a>
+         <a href="#page5">Guestbook</a>
     </nav>
 
     <section id="page1">
@@ -96,6 +97,130 @@ I actually coded this myself using HTML. Tutorials via HTML 4 DUMMIES.
             Since I no longer want to use instagram I am going to DELETE IT. But this page will be an archive of all my posts to date (19/01/2026). !!!!!!!!
         </p>
     </section>
+    
+     <section id="page5">
+        <h2>Guestbook</h2>
+        <p>
+           <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Guest Book</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        .box {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .entry {
+            border-top: 1px solid #ddd;
+            margin-top: 15px;
+            padding-top: 10px;
+        }
+
+        .name {
+            font-weight: bold;
+        }
+
+        .date {
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h1>Guest Book</h1>
+
+    <form id="guestForm">
+        <input type="text" id="name" placeholder="Your name" required>
+        <textarea id="message" placeholder="Your message" required></textarea>
+        <button type="submit">Sign</button>
+    </form>
+
+    <div id="entries"></div>
+</div>
+
+<script>
+    const form = document.getElementById("guestForm");
+    const entriesDiv = document.getElementById("entries");
+
+    function loadEntries() {
+        const entries = JSON.parse(localStorage.getItem("guestbook")) || [];
+        entriesDiv.innerHTML = "";
+
+        entries.forEach(e => {
+            const div = document.createElement("div");
+            div.className = "entry";
+            div.innerHTML = `
+                <div class="name">${e.name}</div>
+                <div class="date">${e.date}</div>
+                <div>${e.message}</div>
+            `;
+            entriesDiv.appendChild(div);
+        });
+    }
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const message = document.getElementById("message").value;
+
+        const entries = JSON.parse(localStorage.getItem("guestbook")) || [];
+        entries.unshift({
+            name: name,
+            message: message,
+            date: new Date().toLocaleString()
+        });
+
+        localStorage.setItem("guestbook", JSON.stringify(entries));
+
+        form.reset();
+        loadEntries();
+    });
+
+    loadEntries();
+</script>
 
 </body>
 </html>
+
+        </p>
+    </section>
+
+</body>
+</html>
+
