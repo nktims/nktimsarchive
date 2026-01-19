@@ -101,77 +101,59 @@ I actually coded this myself using HTML. Tutorials via HTML 4 DUMMIES.
      <section id="page5">
         <h2>Guestbook</h2>
         <p>
-           <!DOCTYPE html>
+          <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Guest Book</title>
+    <title>Guest Book</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            padding: 20px;
-        }
-
-        .box {
-            max-width: 600px;
-            margin: auto;
+            font-family: "Times New Roman", Times, serif;
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        h1 {
-            text-align: center;
+            color: black;
+            max-width: 700px;
+            margin: 40px auto;
         }
 
         input, textarea, button {
-            width: 100%;
-            margin-top: 10px;
-            padding: 10px;
+            font-family: "Times New Roman", Times, serif;
             font-size: 16px;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        textarea {
+            height: 80px;
         }
 
         button {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #45a049;
-        }
-
-        .entry {
-            border-top: 1px solid #ddd;
-            margin-top: 15px;
-            padding-top: 10px;
-        }
-
-        .name {
-            font-weight: bold;
-        }
-
-        .date {
-            font-size: 12px;
-            color: #777;
+            margin-top: 12px;
         }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <h1>Guest Book</h1>
+<h1>Guest Book</h1>
 
-    <form id="guestForm">
-        <input type="text" id="name" placeholder="Your name" required>
-        <textarea id="message" placeholder="Your message" required></textarea>
-        <button type="submit">Sign</button>
-    </form>
+<hr>
 
-    <div id="entries"></div>
-</div>
+<form id="guestForm">
+    <p>
+        Name:<br>
+        <input type="text" id="name" required>
+    </p>
+
+    <p>
+        Message:<br>
+        <textarea id="message" required></textarea>
+    </p>
+
+    <button type="submit">Sign Guest Book</button>
+</form>
+
+<hr>
+
+<div id="entries"></div>
 
 <script>
     const form = document.getElementById("guestForm");
@@ -182,14 +164,14 @@ I actually coded this myself using HTML. Tutorials via HTML 4 DUMMIES.
         entriesDiv.innerHTML = "";
 
         entries.forEach(e => {
-            const div = document.createElement("div");
-            div.className = "entry";
-            div.innerHTML = `
-                <div class="name">${e.name}</div>
-                <div class="date">${e.date}</div>
-                <div>${e.message}</div>
+            const entry = document.createElement("div");
+            entry.innerHTML = `
+                <p><strong>${e.name}</strong><br>
+                ${e.message}<br>
+                <small>${e.date}</small></p>
+                <hr>
             `;
-            entriesDiv.appendChild(div);
+            entriesDiv.appendChild(entry);
         });
     }
 
@@ -207,7 +189,6 @@ I actually coded this myself using HTML. Tutorials via HTML 4 DUMMIES.
         });
 
         localStorage.setItem("guestbook", JSON.stringify(entries));
-
         form.reset();
         loadEntries();
     });
@@ -223,4 +204,5 @@ I actually coded this myself using HTML. Tutorials via HTML 4 DUMMIES.
 
 </body>
 </html>
+
 
