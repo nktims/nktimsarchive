@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      font-family: sans-serif;
+      color: white;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Two stacked background videos for crossfade */
+    .bg-video {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      background: black;
+      transition: opacity 1s ease;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        repeating-radial-gradient(
+          circle at 0 0,
+          rgba(255,255,255,0.04) 0,
+          rgba(0,0,0,0.04) 1px,
+          transparent 2px
+        );
+      background-size: 3px 3px;
+      opacity: 0.12;
+    }
+
+    h1 {
+      margin: auto 0;
+      font-size: 10rem;
+      font-weight: normal;
+      z-index: 1;
+      text-align: center;
+    }
+
+    nav {
+      padding: 20px;
+      display: flex;
+      gap: 80px;
+      z-index: 1;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Two background videos for seamless crossfade -->
+  <video id="bg1" class="bg-video" autoplay muted playsinline preload="auto" style="opacity:1;"></video>
+  <video id="bg2" class="bg-video" autoplay muted playsinline preload="auto" style="opacity:0;"></video>
+
+  <h1>nktims archive</h1>
+
+  <nav>
+    <a href="about.html">About</a>
+    <a href="CV.html">CV</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="page4.html">Writing</a>
+    <a href="page5.html">Photos</a>
+    <a href="page6.html">Contact</a>
+  </nav>
+
+  <script>
+    const VIDEO_COUNT = 28;
+    const videoOrder = Array.from({length: VIDEO_COUNT}, (_, i) => i + 1);
+
+    // Shuffle for random order
+    for (let i = videoOrder.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [videoOrder[i], videoOrder[j]] = [videoOrder[j], videoOrder[i]];
+    }
+
+    let index = 0;
+
+    const bg1 = document.getElementById("bg1");
+    const bg2 = document.getElementById("bg2");
+
+    let current = bg1;
+    let next = bg2;
+
+    function playNext() {
+      // Set next video's source
+      next.src = `assets/background${videoOrder[index]}.mp4`;
+      next.load();
+
+      // When next video can play, fade in
+      next.oncanplaythrough = () => {
+        next.style.opacity = 1;
+        current.style.opacity = 0;
+
+        // Swap roles
+        const temp = current;
+        current = next;
+        next = temp;
+
+        index = (index + 1) % VIDEO_COUNT;
+
+        // Remove listener to avoid multiple triggers
+        next.oncanplaythrough = null;
+      };
+    }
+
+    // Start first video
+    current.src = `assets/background${videoOrder[index]}.mp4`;
+    current.load();
+    index++;
+
+    current.addEventListener("ended", playNext);
+    next.addEventListener("ended", playNext);
+
+  </script>
+
+</body>
+</html>
+	
